@@ -50,8 +50,10 @@ void celt_fir_sse4_1(const opus_val16 *x,
     int i,j;
     VARDECL(opus_val16, rnum);
 
+#ifndef SMALL_FOOTPRINT
     __m128i vecNoA;
     opus_int32 noA ;
+#endif
     SAVE_STACK;
 
    ALLOC(rnum, ord, opus_val16);
@@ -67,6 +69,7 @@ void celt_fir_sse4_1(const opus_val16 *x,
       }
       y[i] = SATURATE16(PSHR32(sum, SIG_SHIFT));
    }
+   (void)arch;
 #else
    noA = EXTEND32(1) << SIG_SHIFT >> 1;
    vecNoA = _mm_set_epi32(noA, noA, noA, noA);

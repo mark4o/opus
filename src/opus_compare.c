@@ -75,7 +75,7 @@ static size_t read_pcm16(float **_samples,FILE *_fin,int _nchannels){
         int s;
         s=buf[2*(xi*_nchannels+ci)+1]<<8|buf[2*(xi*_nchannels+ci)];
         s=((s&0xFFFF)^0x8000)-0x8000;
-        samples[(nsamples+xi)*_nchannels+ci]=s;
+        samples[(nsamples+xi)*_nchannels+ci]=(float)s;
       }
     }
     nsamples+=nread;
@@ -171,7 +171,7 @@ int main(int _argc,const char **_argv){
   float   *X;
   float   *Y;
   double    err;
-  float    Q;
+  double   Q;
   size_t   xlength;
   size_t   ylength;
   size_t   nframes;
@@ -230,7 +230,7 @@ int main(int _argc,const char **_argv){
   /*Read in the data and allocate scratch space.*/
   xlength=read_pcm16(&x,fin1,2);
   if(nchannels==1){
-    for(xi=0;xi<xlength;xi++)x[xi]=.5*(x[2*xi]+x[2*xi+1]);
+    for(xi=0;xi<xlength;xi++)x[xi]=.5f*(x[2*xi]+x[2*xi+1]);
   }
   fclose(fin1);
   ylength=read_pcm16(&y,fin2,nchannels);
@@ -346,7 +346,7 @@ int main(int _argc,const char **_argv){
           float re;
           float im;
           re=Y[(xi*yfreqs+xj)*nchannels+ci]/X[(xi*NFREQS+xj)*nchannels+ci];
-          im=re-log(re)-1;
+          im=re-(float)log(re)-1;
           /*Make comparison less sensitive around the SILK/CELT cross-over to
             allow for mode freedom in the filters.*/
           if(xj>=79&&xj<=81)im*=0.1F;
