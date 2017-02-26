@@ -47,7 +47,7 @@ silk_float silk_schur_FLP(                  /* O    returns residual energy     
     k = 0;
     do {
         C[ k ][ 0 ] = C[ k ][ 1 ] = auto_corr[ k ];
-    } while( k++ < order );
+    } while( ++k <= order );
 
     for( k = 0; k < order; k++ ) {
         /* Get reflection coefficient */

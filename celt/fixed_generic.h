@@ -126,7 +126,7 @@
 #define SUB32_ovflw(a,b) ((opus_val32)((opus_uint32)(a)-(opus_uint32)(b)))
 /* Avoid MSVC warning C4146: unary minus operator applied to unsigned type */
 /** Negate 32-bit value, ignore any overflows */
-#define NEG32_ovflw(a) ((opus_val32)(~(opus_uint32)(a)+1))
+#define NEG32_ovflw(a) ((opus_val32)(0-(opus_uint32)(a)))
 
 /** 16x16 multiplication where the result fits in 16 bits */
 #define MULT16_16_16(a,b)     ((((opus_val16)(a))*((opus_val16)(b))))

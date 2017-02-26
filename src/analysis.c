@@ -48,6 +48,8 @@
 #define M_PI 3.141592653
 #endif
 
+#ifndef DISABLE_FLOAT_API
+
 static const float dct_table[128] = {
         0.250000f, 0.250000f, 0.250000f, 0.250000f, 0.250000f, 0.250000f, 0.250000f, 0.250000f,
         0.250000f, 0.250000f, 0.250000f, 0.250000f, 0.250000f, 0.250000f, 0.250000f, 0.250000f,
@@ -312,9 +314,7 @@ static void tonality_analysis(TonalityAnalysisState *tonal, const CELTMode *celt
     float slope=0;
     float frame_stationarity;
     float relativeE;
-#ifndef DISABLE_FLOAT_API
     float frame_probs[2];
-#endif
     float alpha, alphaE, alphaE2;
     float frame_loudness;
     float bandwidth_mask;
@@ -686,7 +686,6 @@ static void tonality_analysis(TonalityAnalysisState *tonal, const CELTMode *celt
     features[23] = info->tonality_slope + 0.069216f;
     features[24] = tonal->lowECount - 0.067930f;
 
-#ifndef DISABLE_FLOAT_API
     mlp_process(&net, features, frame_probs);
     frame_probs[0] = .5f*(frame_probs[0]+1);
     /* Curve fitting between the MLP probability and the actual probability */
@@ -822,9 +821,6 @@ static void tonality_analysis(TonalityAnalysisState *tonal, const CELTMode *celt
        }
     }
     tonal->last_music = tonal->music_prob>.5f;
-#else
-    info->music_prob = 0;
-#endif
 #ifdef MLP_TRAINING
     for (i=0;i<25;i++)
        printf("%f ", features[i]);
@@ -866,3 +862,5 @@ void run_analysis(TonalityAnalysisState *analysis, const CELTMode *celt_mode, co
    analysis_info->valid = 0;
    tonality_get_info(analysis, analysis_info, frame_size);
 }
+
+#endif /* DISABLE_FLOAT_API */

@@ -54,7 +54,7 @@ opus_int32 silk_schur64(                            /* O    returns residual ene
     k = 0;
     do {
         C[ k ][ 0 ] = C[ k ][ 1 ] = c[ k ];
-    } while( k++ < order );
+    } while( ++k <= order );
 
     for( k = 0; k < order; k++ ) {
         /* Check that we won't be getting an unstable rc, otherwise stop here. */

@@ -54,18 +54,18 @@ opus_int32 silk_schur(                              /* O    Returns residual ene
         /* lz must be 1, so shift one to the right */
         do {
             C[ k ][ 0 ] = C[ k ][ 1 ] = silk_RSHIFT( c[ k ], 1 );
-        } while( k++ < order );
+        } while( ++k <= order );
     } else if( lz > 2 ) {
         /* Shift to the left */
         lz -= 2;
         do {
             C[ k ][ 0 ] = C[ k ][ 1 ] = silk_LSHIFT( c[ k ], lz );
-        } while( k++ < order );
+        } while( ++k <= order );
     } else {
         /* No need to shift */
         do {
             C[ k ][ 0 ] = C[ k ][ 1 ] = c[ k ];
-        } while( k++ < order );
+        } while( ++k <= order );
     }
 
     for( k = 0; k < order; k++ ) {
